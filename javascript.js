@@ -6,6 +6,7 @@ const DIVIDE = "/";
 let a = 0;
 let b = 0;
 let result = 0;
+let equals = false;
 let operator;
 let buttons = document.querySelectorAll('button');
 let buttonNumbers = document.querySelectorAll('.btnNumber');
@@ -32,6 +33,7 @@ function clear (){
     a = 0;
     b = 0;
     operator = null;
+    equals = false; 
 }
 
 function operate(operator, a, b){
@@ -49,10 +51,6 @@ function operate(operator, a, b){
         case DIVIDE:
             return divide(a,b);
             break;
-        // ... more cases
-        default:
-            // Code to execute if no case matches
-            break; // Optional for the default case if it's the last in the block
     }
 }
 
@@ -60,6 +58,9 @@ function operate(operator, a, b){
 buttonNumbers.forEach(function(button) {
         button.addEventListener('click', function(event) {
             // Your event handling logic here
+            if (equals && operator == null){
+                clear();
+            }
             if (!operator) {
                 
                 if (a == 0) {
@@ -100,12 +101,12 @@ buttonOperators.forEach(function(button) {
 let equalBtn = document.querySelector('.btn-equals');
 equalBtn.addEventListener('click', function(event) {
     display.textContent = " ";        
-    //display.textContent = operate(operator, a, b);
     let result = operate(operator, a, b);
     display.textContent = result;
     a = result;
     b = 0;
     operator = null;
+    equals = true;
 });
 
 let clearBtn = document.querySelector('.btn-clear');
