@@ -3,6 +3,7 @@ const ADD = "+";
 const SUBTRACT = "-";
 const MULTIPLY = "X";
 const DIVIDE = "/";
+const DIVIDE_ERROR = "Can't divide by 0!";
 let a = 0;
 let b = 0;
 let result = 0;
@@ -14,19 +15,29 @@ let buttonOperators = document.querySelectorAll('.btn-operator');
 let display = document.querySelector('.display');
 
 function add (a, b){
-    return Number(a) + Number(b);
+    let result = Number(a) + Number(b);
+    return Math.round(result * 100) / 100;
 }
 
 function subtract (a, b) {
-    return a - b;
+    let result =  a - b;
+    return Math.round(result * 100) / 100;
 }
 
 function multiply (a , b) {
-    return a * b;
+    let result = a * b;
+    return Math.round(result * 100) / 100;
 }
 
 function divide (a, b){
-    return a / b;
+    if (b == 0){
+        clear();
+        return DIVIDE_ERROR;
+
+    } else {
+        let result = a / b;
+        return Math.round(result * 100) / 100;
+    }
 }
 
 function clear (){
@@ -57,7 +68,6 @@ function operate(operator, a, b){
 
 buttonNumbers.forEach(function(button) {
         button.addEventListener('click', function(event) {
-            // Your event handling logic here
             if (equals && operator == null){
                 clear();
             }
@@ -100,13 +110,17 @@ buttonOperators.forEach(function(button) {
 
 let equalBtn = document.querySelector('.btn-equals');
 equalBtn.addEventListener('click', function(event) {
-    display.textContent = " ";        
-    let result = operate(operator, a, b);
-    display.textContent = result;
-    a = result;
-    b = 0;
-    operator = null;
-    equals = true;
+    if (operator != null) { //testing
+        let result = operate(operator, a, b);
+        display.textContent = result;
+        //check for divide by 0 error here
+        if (result != DIVIDE_ERROR){
+            a = result;
+            b = 0;
+            operator = null;
+            equals = true;
+        }
+    }
 });
 
 let clearBtn = document.querySelector('.btn-clear');
